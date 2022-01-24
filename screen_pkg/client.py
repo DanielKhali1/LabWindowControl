@@ -1,8 +1,15 @@
 import socket
 
+
+f = open('config.info','r')
+lines = f.readlines()
+
+host = lines[0].split(":")[1][:len(lines[0].split(":")[1])-1]
+port = int(lines[1].split(":")[1])
+name = lines[2].split(":")[1]
+print(host, "\n", port, "\n", name)
+f.close()
 ClientSocket = socket.socket()
-host = '127.0.0.1'
-port = 1233
 
 print('Waiting for connection')
 try:
@@ -10,11 +17,8 @@ try:
 except socket.error as e:
     print(str(e))
 
-Response = ClientSocket.recv(1024)
-while True:
-    # Input = input('Say Something: ')
-    # ClientSocket.send(str.encode(Input))
-    
+ClientSocket.send(str.encode(name))
+while True:    
     Response = ClientSocket.recv(1024)
     print(Response.decode('utf-8'))
 
